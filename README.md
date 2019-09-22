@@ -83,20 +83,6 @@ Set `--val_every` to a number of steps `N > 0`, and "validation" loss against a 
 
 You can use SGD instead of Adam with `--optimizer sgd`. This also helps conserve memory when training the 345M model. Note: the learning rate needs to be adjusted for SGD, due to not having Adam's gradient normalization (0.0006 seems to be a good number from some experiments).
 
-### Multi gpu (out of date)
-
-To do distributed on multiple GPUs or machines using Horovod:
-
-```
-mpirun -np 4 \
-    -H localhost:4 \
-    -bind-to none -map-by slot \
-    -x NCCL_DEBUG=INFO -x LD_LIBRARY_PATH -x PATH \
-    -x PYTHONPATH=src \
-    -mca pml ob1 -mca btl ^openib \
-    /home/jovyan/gpt-2/train-horovod.py --dataset encoded.npz
-```
-
 ## GPT-2 samples
 
 | WARNING: Samples are unfiltered and may contain offensive content. |
