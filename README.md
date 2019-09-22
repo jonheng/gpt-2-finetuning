@@ -1,5 +1,11 @@
+# gpt-2-finetuning
 
-Reference:  ["Beginner’s Guide to Retrain GPT-2 (117M) to Generate Custom Text Content"](https://medium.com/@ngwaifoong92/beginners-guide-to-retrain-gpt-2-117m-to-generate-custom-text-content-8bb5363d8b7f)
+This is a package for finetuning GPT-2 models.
+
+It is based on the work done by:
+
+- [OpenAI's official GPT-2 repository](https://github.com/openai/gpt-2)
+- Finetuning [functionality from nshepperd's fork](https://github.com/nshepperd/gpt-2) of the official GPT-2 repository
 
 # gpt-2
 
