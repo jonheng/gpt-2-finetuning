@@ -7,6 +7,21 @@ It is based on the work done by:
 - [OpenAI's official GPT-2 repository](https://github.com/openai/gpt-2)
 - Finetuning [functionality from nshepperd's fork](https://github.com/nshepperd/gpt-2) of the official GPT-2 repository
 
+## Usage
+
+Install the package
+```sh
+pip install gpt_2_finetuning
+```
+
+Download GPT-2 models
+```sh
+# Available model sizes: ["124M", "355M", "774M"]
+
+# Example command to download model
+download_gpt2_model 124M
+```
+
 # gpt-2
 
 Code from the paper ["Language Models are Unsupervised Multitask Learners"](https://d4mucfpksywv.cloudfront.net/better-language-models/language-models.pdf).

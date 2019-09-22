@@ -1,13 +1,25 @@
+#!/usr/bin/env python
+
 import os
 import sys
 import requests
 from tqdm import tqdm
 
+available_model_sizes = [
+    "124M", "355M", "774M"
+]
+
 if len(sys.argv) != 2:
-    print('You must enter the model name as a parameter, e.g.: download_model.py 117M')
+    print('You must enter the model name as a parameter, e.g.: download_gpt2_model 124M')
+    print('Available model sizes: ', available_model_sizes)
     sys.exit(1)
 
 model = sys.argv[1]
+if model not in available_model_sizes:
+    print('Not a valid model size')
+    print('Available model sizes: ', available_model_sizes)
+    sys.exit(1)
+
 
 subdir = os.path.join('models', model)
 if not os.path.exists(subdir):
