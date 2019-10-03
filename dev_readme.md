@@ -1,7 +1,7 @@
 ## Generating distribution archives
 
 ```sh
-python3 setup.py sdist bdist_wheel
+clean_and_build.sh
 ```
 
 ## Upload distribution archives
