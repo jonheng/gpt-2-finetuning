@@ -30,10 +30,10 @@ def randomize(context, hparams, p):
         return context
 
 #TODO: change model_name to model_directory
-def train(dataset_path, model_name,
+def train(dataset_path, model_name, n_steps,
           combine=50000, encoding='utf-8',
           batch_size=1, learning_rate=0.00002,
-          accumulate_gradients=1, mem_saving_gradients=False,
+          accumulate_gradients=1, mem_saving_gradients=True,
           only_train_transformer=False, optimizer='adam',
           noise=0.0, top_k=40, top_p=0.0,
           restore_from='latest', run_name='run1',
@@ -48,6 +48,7 @@ def train(dataset_path, model_name,
     Args:
         dataset_path (str):             Input file, directory, or glob pattern (utf-8 text, or preencoded .npz files).
         model_name (str):               Pretrained model name
+        n_steps (int):                  Number of training steps
         combine (int):                  Concatenate input files with <|endoftext|> separator into chunks of this minimum size
         encoding (str):                 Set the encoding for reading and writing files.
         batch_size (int):               Batch size
@@ -79,11 +80,6 @@ def train(dataset_path, model_name,
     if sample_length > hparams.n_ctx:
         raise ValueError(
             "Can't get samples longer than window size: %s" % hparams.n_ctx)
-
-    if model_name == '345M':
-        mem_saving_gradients = True
-        if optimizer == 'adam':
-            only_train_transformer = True
 
     config = tf.ConfigProto()
     config.gpu_options.allow_growth = True
@@ -255,7 +251,7 @@ def train(dataset_path, model_name,
         start_time = time.time()
 
         try:
-            while True:
+            while counter <= n_steps:
                 if counter % save_every == 0:
                     save()
                 if counter % sample_every == 0:
@@ -288,6 +284,7 @@ def train(dataset_path, model_name,
                         avg=avg_loss[0] / avg_loss[1]))
 
                 counter += 1
+            save()
         except KeyboardInterrupt:
             print('interrupted')
             save()
