@@ -44,11 +44,11 @@ def sample_sequence(*, hparams, length, start_token=None, batch_size=None, conte
         context = tf.fill([batch_size, 1], start_token)
 
     def step(hparams, tokens, past=None):
-        lm_output = model.model(hparams=hparams, X=tokens, past=past, reuse=tf.AUTO_REUSE)
+        lm_output = model(hparams=hparams, X=tokens, past=past, reuse=tf.AUTO_REUSE)
 
         logits = lm_output['logits'][:, :, :hparams.n_vocab]
         presents = lm_output['present']
-        presents.set_shape(model.past_shape(hparams=hparams, batch_size=batch_size))
+        presents.set_shape(past_shape(hparams=hparams, batch_size=batch_size))
         return {
             'logits': logits,
             'presents': presents,
@@ -86,7 +86,7 @@ def sample_sequence(*, hparams, length, start_token=None, batch_size=None, conte
                 context,
             ],
             shape_invariants=[
-                tf.TensorShape(model.past_shape(hparams=hparams, batch_size=batch_size)),
+                tf.TensorShape(past_shape(hparams=hparams, batch_size=batch_size)),
                 tf.TensorShape([batch_size]),
                 tf.TensorShape([batch_size, None]),
             ],

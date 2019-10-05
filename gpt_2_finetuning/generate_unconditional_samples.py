@@ -41,8 +41,8 @@ def sample_model(
     :top_p=0.0 : Float value controlling diversity. Implements nucleus sampling,
      overriding top_k if set to a value > 0. A good setting is 0.9.
     """
-    enc = encoder.get_encoder(model_name)
-    hparams = model.default_hparams()
+    enc = get_encoder(model_name)
+    hparams = default_hparams()
     with open(os.path.join('models', model_name, 'hparams.json')) as f:
         hparams.override_from_dict(json.load(f))
 
@@ -55,7 +55,7 @@ def sample_model(
         np.random.seed(seed)
         tf.set_random_seed(seed)
 
-        output = sample.sample_sequence(
+        output = sample_sequence(
             hparams=hparams, length=length,
             start_token=enc.encoder['<|endoftext|>'],
             batch_size=batch_size,
