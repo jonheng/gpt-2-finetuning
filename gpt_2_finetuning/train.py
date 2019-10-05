@@ -171,7 +171,7 @@ def train(dataset_path, model_name,
         saver.restore(sess, ckpt)
 
         print('Loading dataset...')
-        chunks = load_dataset(enc, dataset, combine, encoding=encoding)
+        chunks = load_dataset(enc, dataset_path, combine, encoding=encoding)
         data_sampler = Sampler(chunks)
         if val_every > 0:
             if val_dataset:

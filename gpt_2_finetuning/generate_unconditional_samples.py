@@ -11,9 +11,9 @@ from .sample import sample_sequence
 from .encoder import get_encoder
 
 def sample_model(
-    model_name='117M',
+    model_name,
     seed=None,
-    nsamples=0,
+    nsamples=1,
     batch_size=1,
     length=None,
     temperature=1,
@@ -25,8 +25,7 @@ def sample_model(
     :model_name=117M : String, which model to use
     :seed=None : Integer seed for random number generators, fix seed to
      reproduce results
-    :nsamples=0 : Number of samples to return, if 0, continues to
-     generate samples indefinately.
+    :nsamples=1 : Number of samples to return
     :batch_size=1 : Number of batches (only affects speed/memory).
     :length=None : Number of tokens in generated text, if None (default), is
      determined by model hyperparameters
@@ -67,7 +66,7 @@ def sample_model(
         saver.restore(sess, ckpt)
 
         generated = 0
-        while nsamples == 0 or generated < nsamples:
+        while generated < nsamples:
             out = sess.run(output)
             for i in range(batch_size):
                 generated += batch_size
