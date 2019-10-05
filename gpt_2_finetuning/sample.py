@@ -1,6 +1,6 @@
 import tensorflow as tf
 
-import model
+from .model import model, past_shape
 
 def top_k_logits(logits, k):
     if k == 0:
