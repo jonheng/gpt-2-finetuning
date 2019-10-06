@@ -41,7 +41,7 @@ def train(dataset_path, model_name, n_steps,
           sample_num=1, save_every=1000, 
           val_dataset=None, val_batch_size=2,
           val_batch_count=40, val_every=0,
-          print_loss_every=1
+          print_loss_every=1, max_checkpoints_to_keep=5
           ):
     '''
     Training function for GPT-2 models
@@ -149,7 +149,7 @@ def train(dataset_path, model_name, n_steps,
 
         saver = tf.train.Saver(
             var_list=all_vars,
-            max_to_keep=5,
+            max_to_keep=max_checkpoints_to_keep,
             keep_checkpoint_every_n_hours=2)
         sess.run(tf.global_variables_initializer())
 
