@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
 
-import fire
 import json
 import os
 import numpy as np
@@ -86,6 +85,3 @@ def interact_model(
                     print("=" * 40 + " SAMPLE " + str(generated) + " " + "=" * 40)
                     print(text)
             print("=" * 80)
-
-if __name__ == '__main__':
-    fire.Fire(interact_model)

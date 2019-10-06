@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
 
-import fire
 import json
 import os
 import numpy as np
@@ -73,6 +72,3 @@ def sample_model(
                 text = enc.decode(out[i])
                 print("=" * 40 + " SAMPLE " + str(generated) + " " + "=" * 40)
                 print(text)
-
-if __name__ == '__main__':
-    fire.Fire(sample_model)
