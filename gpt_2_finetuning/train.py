@@ -40,7 +40,8 @@ def train(dataset_path, model_name, n_steps,
           sample_every=100, sample_length=1023, 
           sample_num=1, save_every=1000, 
           val_dataset=None, val_batch_size=2,
-          val_batch_count=40, val_every=0
+          val_batch_count=40, val_every=0,
+          print_loss_every=1
           ):
     '''
     Training function for GPT-2 models
@@ -70,6 +71,7 @@ def train(dataset_path, model_name, n_steps,
         val_batch_size (int):           Batch size for validation.
         val_batch_count (int):          Number of batches for validation.
         val_every (int):                Calculate validation loss every given steps.
+        print_loss_every (int):         Prints loss every N steps
     '''
     
     enc = encoder.get_encoder(model_name)
@@ -192,18 +194,18 @@ def train(dataset_path, model_name, n_steps,
             with open(counter_path, 'r') as fp:
                 counter = int(fp.read()) + 1
 
-        def save():
+        def save(step_count):
             maketree(os.path.join(CHECKPOINT_DIR, run_name))
             print(
                 'Saving',
                 os.path.join(CHECKPOINT_DIR, run_name,
-                             'model-{}').format(counter))
+                             'model-{}').format(step_count))
             saver.save(
                 sess,
                 os.path.join(CHECKPOINT_DIR, run_name, 'model'),
-                global_step=counter)
+                global_step=step_count)
             with open(counter_path, 'w') as fp:
-                fp.write(str(counter) + '\n')
+                fp.write(str(step_count) + '\n')
 
         def generate_samples():
             print('Generating samples...')
@@ -252,13 +254,6 @@ def train(dataset_path, model_name, n_steps,
 
         try:
             while counter <= n_steps:
-                if counter % save_every == 0:
-                    save()
-                if counter % sample_every == 0:
-                    generate_samples()
-                if val_every > 0 and (counter % val_every == 0 or counter == 1):
-                    validation()
-
                 if accumulate_gradients > 1:
                     sess.run(opt_reset)
                     for _ in range(accumulate_gradients):
@@ -275,17 +270,25 @@ def train(dataset_path, model_name, n_steps,
                 avg_loss = (avg_loss[0] * 0.99 + v_loss,
                             avg_loss[1] * 0.99 + 1.0)
 
-                print(
-                    '[{counter} | {time:2.2f}] loss={loss:2.2f} avg={avg:2.2f}'
-                    .format(
-                        counter=counter,
-                        time=time.time() - start_time,
-                        loss=v_loss,
-                        avg=avg_loss[0] / avg_loss[1]))
+                if counter % print_loss_every == 0:
+                    print(
+                        '[{counter} | {time:2.2f}] loss={loss:2.2f} avg={avg:2.2f}'
+                        .format(
+                            counter=counter,
+                            time=time.time() - start_time,
+                            loss=v_loss,
+                            avg=avg_loss[0] / avg_loss[1]))
+                if counter % save_every == 0:
+                    save(counter)
+                if counter % sample_every == 0:
+                    generate_samples()
+                if val_every > 0 and (counter % val_every == 0 or counter == 1):
+                    validation()
 
                 counter += 1
-            save()
+            if (counter - 1) % save_every != 0 :
+                save(counter - 1) 
         except KeyboardInterrupt:
             print('interrupted')
-            save()
+            save(counter)
 
