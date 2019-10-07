@@ -11,6 +11,7 @@ from .encoder import get_encoder
 
 def sample_model(
     model_name,
+    checkpoint_dir=None,
     seed=None,
     nsamples=1,
     batch_size=1,
@@ -21,7 +22,7 @@ def sample_model(
 ):
     """
     Run the sample_model
-    :model_name=117M : String, which model to use
+    :model_name : String, which model to use
     :seed=None : Integer seed for random number generators, fix seed to
      reproduce results
     :nsamples=1 : Number of samples to return
@@ -61,7 +62,10 @@ def sample_model(
         )[:, 1:]
 
         saver = tf.train.Saver()
-        ckpt = tf.train.latest_checkpoint(os.path.join('models', model_name))
+        if checkpoint_dir:
+            ckpt = tf.train.latest_checkpoint(checkpoint_dir)
+        else:
+            ckpt = tf.train.latest_checkpoint(os.path.join('models', model_name))
         saver.restore(sess, ckpt)
 
         generated = 0
