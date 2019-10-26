@@ -23,6 +23,7 @@ def interact_model(
     """
     Interactively run the model
     :model_name : String, which model to use
+    :checkpoint_dir=None : String, path to load checkpoint. If none, loads model specified in model_name 
     :seed=None : Integer seed for random number generators, fix seed to reproduce
      results
     :nsamples=1 : Number of samples to return total

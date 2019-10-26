@@ -10,7 +10,7 @@ setup(
   author_email = 'jonheng@users.noreply.github.com',
   url = 'https://github.com/jonheng/gpt-2-finetuning',
   keywords = ['language model', 'machine learning', 'gpt2'],
-  install_requires=['numpy', 'regex', 'requests', 'tqdm', 'toposort'],
+  install_requires=['numpy', 'regex', 'requests', 'tqdm', 'toposort', 'tensorflow==1.14'],
   classifiers=[
         "Programming Language :: Python :: 3",
         "License :: OSI Approved :: MIT License",
