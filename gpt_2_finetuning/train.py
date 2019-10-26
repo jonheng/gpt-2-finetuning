@@ -150,7 +150,7 @@ def train(dataset_path, model_name, n_steps,
         saver = tf.train.Saver(
             var_list=all_vars,
             max_to_keep=max_checkpoints_to_keep,
-            keep_checkpoint_every_n_hours=2)
+            keep_checkpoint_every_n_hours=10000)
         sess.run(tf.global_variables_initializer())
 
         if restore_from == 'latest':
