@@ -3,7 +3,7 @@ from setuptools import setup
 setup(
   name = 'gpt_2_finetuning',   
   packages = ['gpt_2_finetuning'],
-  version = '1.0.1',
+  version = '1.0.13',
   license='MIT',
   description = 'Package for finetuning GPT-2 models',
   author = 'Jonathan Heng',
